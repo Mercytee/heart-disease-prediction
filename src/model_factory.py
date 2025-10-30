@@ -16,7 +16,7 @@ class ModelFactory:
     Handles model creation, training, evaluation, and persistence
     """
     
-    def _init_(self):
+    def __init__(self):  # FIXED: __init__ not _init_
         self.models = {}
         self.best_model = None
         self.best_score = 0
@@ -26,7 +26,7 @@ class ModelFactory:
         
     def _setup_logger(self) -> logging.Logger:
         """Setup logger for model operations"""
-        logger = logging.getLogger(_name_)
+        logger = logging.getLogger(__name__)  # FIXED: __name__ not _name_
         if not logger.handlers:
             handler = logging.StreamHandler()
             formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')

@@ -1,0 +1,29 @@
+{
+  "best_model_info": {
+    "name": "svm",
+    "cv_score": 0.8350340136054422,
+    "type": "SVC"
+  },
+  "data_info": {
+    "shape": [
+      304,
+      14
+    ],
+    "columns": [
+      "age",
+      "sex",
+      "cp",
+      "trestbps",
+      "chol",
+      "fbs",
+      "restecg",
+      "thalach",
+      "exang",
+      "oldpeak",
+      "slope",
+      "ca",
+      "thal",
+      "num"
+    ],
+    "data_types": {
+      "age": 
