@@ -1,0 +1,246 @@
+{
+  "best_model_info": {
+    "name": "svm",
+    "cv_score": 0.8350340136054422,
+    "type": "SVC"
+  },
+  "data_info": {
+    "shape": [
+      304,
+      14
+    ],
+    "columns": [
+      "age",
+      "sex",
+      "cp",
+      "trestbps",
+      "chol",
+      "fbs",
+      "restecg",
+      "thalach",
+      "exang",
+      "oldpeak",
+      "slope",
+      "ca",
+      "thal",
+      "target"
+    ],
+    "data_types": {
+      "age": "object",
+      "sex": "object",
+      "cp": "object",
+      "trestbps": "object",
+      "chol": "object",
+      "fbs": "object",
+      "restecg": "object",
+      "thalach": "object",
+      "exang": "object",
+      "oldpeak": "object",
+      "slope": "object",
+      "ca": "object",
+      "thal": "object",
+      "target": "object"
+    },
+    "missing_values": {
+      "age": 0,
+      "sex": 0,
+      "cp": 0,
+      "trestbps": 0,
+      "chol": 0,
+      "fbs": 0,
+      "restecg": 0,
+      "thalach": 0,
+      "exang": 0,
+      "oldpeak": 0,
+      "slope": 0,
+      "ca": 4,
+      "thal": 2,
+      "target": 0
+    },
+    "description": {
+      "age": {
+        "count": 304,
+        "unique": 42,
+        "top": "58.0",
+        "freq": 19
+      },
+      "sex": {
+        "count": 304,
+        "unique": 3,
+        "top": "1.0",
+        "freq": 206
+      },
+      "cp": {
+        "count": 304,
+        "unique": 5,
+        "top": "4.0",
+        "freq": 144
+      },
+      "trestbps": {
+        "count": 304,
+        "unique": 51,
+        "top": "120.0",
+        "freq": 37
+      },
+      "chol": {
+        "count": 304,
+        "unique": 153,
+        "top": "204.0",
+        "freq": 6
+      },
+      "fbs": {
+        "count": 304,
+        "unique": 3,
+        "top": "0.0",
+        "freq": 258
+      },
+      "restecg": {
+        "count": 304,
+        "unique": 4,
+        "top": "0.0",
+        "freq": 151
+      },
+      "thalach": {
+        "count": 304,
+        "unique": 92,
+        "top": "162.0",
+        "freq": 11
+      },
+      "exang": {
+        "count": 304,
+        "unique": 3,
+        "top": "0.0",
+        "freq": 204
+      },
+      "oldpeak": {
+        "count": 304,
+        "unique": 41,
+        "top": "0.0",
+        "freq": 99
+      },
+      "slope": {
+        "count": 304,
+        "unique": 4,
+        "top": "1.0",
+        "freq": 142
+      },
+      "ca": {
+        "count": 300,
+        "unique": 5,
+        "top": "0.0",
+        "freq": 176
+      },
+      "thal": {
+        "count": 302,
+        "unique": 4,
+        "top": "3.0",
+        "freq": 166
+      },
+      "target": {
+        "count": 304,
+        "unique": 6,
+        "top": "0",
+        "freq": 164
+      }
+    },
+    "target_distribution": {
+      "0": 164,
+      "1": 55,
+      "2": 36,
+      "3": 35,
+      "4": 13,
+      "num": 1
+    }
+  },
+  "preprocessing_info": {
+    "is_fitted": true,
+    "feature_names": [
+      "age",
+      "sex",
+      "cp",
+      "trestbps",
+      "chol",
+      "fbs",
+      "restecg",
+      "thalach",
+      "exang",
+      "oldpeak",
+      "slope",
+      "ca",
+      "thal"
+    ],
+    "scaler_fitted": true,
+    "imputer_fitted": false,
+    "label_encoders": [
+      "age",
+      "sex",
+      "cp",
+      "trestbps",
+      "chol",
+      "fbs",
+      "restecg",
+      "thalach",
+      "exang",
+      "oldpeak",
+      "slope",
+      "ca",
+      "thal"
+    ],
+    "numerical_columns_count": 0,
+    "categorical_columns_count": 13
+  },
+  "all_models_performance": [
+    {
+      "Model": "svm",
+      "CV Score": 0.8350340136054422,
+      "Test Accuracy": 0.8360655737704918,
+      "Test Precision": 0.8436263425664218,
+      "Test Recall": 0.8360655737704918,
+      "Test F1-Score": 0.8362418473470827,
+      "Best Parameters": "{'C': 0.1, 'kernel': 'rbf'}",
+      "ROC AUC": 0.9491341991341992
+    },
+    {
+      "Model": "logistic_regression",
+      "CV Score": 0.8269557823129251,
+      "Test Accuracy": 0.819672131147541,
+      "Test Precision": 0.8307607692853595,
+      "Test Recall": 0.819672131147541,
+      "Test F1-Score": 0.819672131147541,
+      "Best Parameters": "{'C': 0.1, 'solver': 'liblinear'}",
+      "ROC AUC": 0.9339826839826839
+    },
+    {
+      "Model": "random_forest",
+      "CV Score": 0.8107142857142857,
+      "Test Accuracy": 0.8032786885245902,
+      "Test Precision": 0.8436058071050756,
+      "Test Recall": 0.8032786885245902,
+      "Test F1-Score": 0.8006174153715138,
+      "Best Parameters": "{'max_depth': 10, 'min_samples_split': 2, 'n_estimators': 200}",
+      "ROC AUC": 0.9323593073593073
+    },
+    {
+      "Model": "gradient_boosting",
+      "CV Score": 0.806547619047619,
+      "Test Accuracy": 0.7704918032786885,
+      "Test Precision": 0.7848494589092468,
+      "Test Recall": 0.7704918032786885,
+      "Test F1-Score": 0.7701216287678477,
+      "Best Parameters": "{'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 200}",
+      "ROC AUC": 0.895021645021645
+    },
+    {
+      "Model": "decision_tree",
+      "CV Score": 0.7569727891156464,
+      "Test Accuracy": 0.6721311475409836,
+      "Test Precision": 0.6786319954776711,
+      "Test Recall": 0.6721311475409836,
+      "Test F1-Score": 0.6724836946941652,
+      "Best Parameters": "{'max_depth': 10, 'min_samples_split': 10}",
+      "ROC AUC": 0.7445887445887445
+    }
+  ],
+  "pipeline_status": "completed",
+  "execution_timestamp": "2025-10-31T10:03:47.046157"
+}
