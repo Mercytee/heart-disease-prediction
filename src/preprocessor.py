@@ -12,7 +12,7 @@ class DataPreprocessor:
     Handles missing values, encoding, scaling, and data splitting
     """
     
-    def __init__(self):
+    def _init_(self):
         self.scaler = StandardScaler()
         self.imputer = SimpleImputer(strategy='median')
         self.label_encoders = {}
@@ -49,6 +49,14 @@ class DataPreprocessor:
         
         # Handle target variable - convert to binary classification
         self.logger.info("Converting target variable to binary classification")
+        
+        # Convert target column to numeric first
+        data[target_col] = pd.to_numeric(data[target_col], errors='coerce')
+        
+        # Handle any NaN values that resulted from conversion
+        data[target_col].fillna(0, inplace=True)
+        
+        # Now convert to binary classification
         data[target_col] = data[target_col].apply(lambda x: 1 if x > 0 else 0)
         
         # Separate features and target
@@ -73,7 +81,6 @@ class DataPreprocessor:
         self.logger.info(f"Target distribution: {y.value_counts().to_dict()}")
         
         return X, y
-    
     def _handle_missing_values(self, X: pd.DataFrame) -> pd.DataFrame:
         """Handle missing values in the dataset"""
         self.logger.info("Handling missing values")

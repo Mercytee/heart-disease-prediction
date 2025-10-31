@@ -10,7 +10,7 @@ class DataLoader:
     Handles data loading, validation, and basic information extraction
     """
     
-    def __init__(self, file_path: str):
+    def _init_(self, file_path: str):
         self.file_path = file_path
         self.column_names = [
             "age", "sex", "cp", "trestbps", "chol", "fbs", "restecg",
@@ -44,7 +44,7 @@ class DataLoader:
             if not os.path.exists(self.file_path):
                 raise FileNotFoundError(f"Data file not found at {self.file_path}")
             
-            # Load data with proper configuration
+            # Load data with proper configuration and convert to numeric
             df = pd.read_csv(
                 self.file_path, 
                 names=self.column_names, 
@@ -52,6 +52,10 @@ class DataLoader:
                 skipinitialspace=True,
                 encoding='utf-8'
             )
+            
+            # Convert all columns to numeric where possible
+            for col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors='ignore')
             
             self._data = df
             self.logger.info(f"Successfully loaded data with shape: {df.shape}")
@@ -66,6 +70,7 @@ class DataLoader:
         except Exception as e:
             self.logger.error(f"Error loading data: {str(e)}")
             raise
+
     
     def get_data_info(self, df: pd.DataFrame = None) -> Dict[str, Any]:
         """
