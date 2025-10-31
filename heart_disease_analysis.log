@@ -1,0 +1,120 @@
+2025-10-30 11:54:21,978 - ERROR - Application failed: cannot access local variable 'os' where it is not associated with a value
+2025-10-30 12:02:38,788 - INFO - Starting Heart Disease Prediction System
+2025-10-30 12:02:38,789 - ERROR - Application failed: ModelTrainer() takes no arguments
+2025-10-30 12:24:39,783 - INFO - Starting Heart Disease Prediction System
+2025-10-30 12:24:39,784 - INFO - Starting complete ML pipeline
+2025-10-30 12:24:39,784 - INFO - Step 1: Loading data
+2025-10-30 12:24:39,784 - INFO - Loading data from data/cleveland.data
+2025-10-30 12:24:39,787 - INFO - Successfully loaded data with shape: (304, 14)
+2025-10-30 12:24:39,809 - INFO - Dataset info: 304 samples, 14 features
+2025-10-30 12:24:39,809 - INFO - Data loaded: 304 samples, 14 features
+2025-10-30 12:24:39,810 - INFO - Data validation passed
+2025-10-30 12:24:39,810 - INFO - Step 2: Preprocessing data
+2025-10-30 12:24:39,810 - INFO - Starting data preprocessing pipeline
+2025-10-30 12:24:39,810 - INFO - Converting target variable to binary classification
+2025-10-30 12:24:39,811 - ERROR - Pipeline failed: '>' not supported between instances of 'str' and 'int'
+2025-10-30 12:24:39,811 - ERROR - Application failed: '>' not supported between instances of 'str' and 'int'
+2025-10-30 12:24:53,546 - INFO - Starting Heart Disease Prediction System
+2025-10-30 12:24:53,546 - INFO - Starting complete ML pipeline
+2025-10-30 12:24:53,546 - INFO - Step 1: Loading data
+2025-10-30 12:24:53,546 - INFO - Loading data from data/cleveland.data
+2025-10-30 12:24:53,548 - INFO - Successfully loaded data with shape: (304, 14)
+2025-10-30 12:24:53,560 - INFO - Dataset info: 304 samples, 14 features
+2025-10-30 12:24:53,560 - INFO - Data loaded: 304 samples, 14 features
+2025-10-30 12:24:53,561 - INFO - Data validation passed
+2025-10-30 12:24:53,561 - INFO - Step 2: Preprocessing data
+2025-10-30 12:24:53,561 - INFO - Starting data preprocessing pipeline
+2025-10-30 12:24:53,561 - INFO - Converting target variable to binary classification
+2025-10-30 12:24:53,561 - ERROR - Pipeline failed: '>' not supported between instances of 'str' and 'int'
+2025-10-30 12:24:53,562 - ERROR - Application failed: '>' not supported between instances of 'str' and 'int'
+2025-10-30 12:29:47,889 - INFO - Starting Heart Disease Prediction System
+2025-10-30 12:29:47,893 - INFO - Starting complete ML pipeline
+2025-10-30 12:29:47,893 - INFO - Step 1: Loading data
+2025-10-30 12:29:47,893 - INFO - Loading data from data/cleveland.data
+2025-10-30 12:29:48,139 - INFO - Successfully loaded data with shape: (304, 14)
+2025-10-30 12:29:48,210 - INFO - Dataset info: 304 samples, 14 features
+2025-10-30 12:29:48,211 - INFO - Data loaded: 304 samples, 14 features
+2025-10-30 12:29:48,211 - INFO - Data validation passed
+2025-10-30 12:29:48,211 - INFO - Step 2: Preprocessing data
+2025-10-30 12:29:48,211 - INFO - Starting data preprocessing pipeline
+2025-10-30 12:29:48,212 - INFO - Converting target variable to binary classification
+2025-10-30 12:29:48,213 - ERROR - Pipeline failed: '>' not supported between instances of 'str' and 'int'
+2025-10-30 12:29:48,213 - ERROR - Application failed: '>' not supported between instances of 'str' and 'int'
+2025-10-30 12:38:43,684 - INFO - Starting Heart Disease Prediction System
+2025-10-30 12:38:43,685 - INFO - Starting complete ML pipeline
+2025-10-30 12:38:43,685 - INFO - Step 1: Loading data
+2025-10-30 12:38:43,685 - INFO - Loading data from data/cleveland.data
+2025-10-30 12:38:43,689 - INFO - Successfully loaded data with shape: (304, 14)
+2025-10-30 12:38:43,713 - INFO - Dataset info: 304 samples, 14 features
+2025-10-30 12:38:43,713 - INFO - Data loaded: 304 samples, 14 features
+2025-10-30 12:38:43,714 - INFO - Data validation passed
+2025-10-30 12:38:43,715 - INFO - Step 2: Preprocessing data
+2025-10-30 12:38:43,715 - INFO - Starting data preprocessing pipeline
+2025-10-30 12:38:43,715 - INFO - Converting target variable to binary classification
+2025-10-30 12:38:43,718 - INFO - Handling missing values
+2025-10-30 12:38:43,719 - INFO - Found 6 missing values
+2025-10-30 12:38:43,722 - INFO - Imputing categorical column: ca
+2025-10-30 12:38:43,724 - INFO - Imputing categorical column: thal
+2025-10-30 12:38:43,725 - INFO - Missing value handling completed
+2025-10-30 12:38:43,725 - INFO - Encoding categorical features
+2025-10-30 12:38:43,725 - INFO - Encoding categorical columns: ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+2025-10-30 12:38:43,726 - INFO - Encoded age with 42 classes
+2025-10-30 12:38:43,727 - INFO - Encoded sex with 3 classes
+2025-10-30 12:38:43,727 - INFO - Encoded cp with 5 classes
+2025-10-30 12:38:43,728 - INFO - Encoded trestbps with 51 classes
+2025-10-30 12:38:43,729 - INFO - Encoded chol with 153 classes
+2025-10-30 12:38:43,729 - INFO - Encoded fbs with 3 classes
+2025-10-30 12:38:43,730 - INFO - Encoded restecg with 4 classes
+2025-10-30 12:38:43,730 - INFO - Encoded thalach with 92 classes
+2025-10-30 12:38:43,731 - INFO - Encoded exang with 3 classes
+2025-10-30 12:38:43,732 - INFO - Encoded oldpeak with 41 classes
+2025-10-30 12:38:43,732 - INFO - Encoded slope with 4 classes
+2025-10-30 12:38:43,733 - INFO - Encoded ca with 5 classes
+2025-10-30 12:38:43,733 - INFO - Encoded thal with 4 classes
+2025-10-30 12:38:43,733 - INFO - Scaling numerical features
+2025-10-30 12:38:43,734 - INFO - Scaling numerical columns: ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+2025-10-30 12:38:43,738 - INFO - Data preprocessing completed successfully
+2025-10-30 12:38:43,738 - INFO - Step 3: Splitting data
+2025-10-30 12:38:43,738 - INFO - Splitting data with test size: 0.2
+2025-10-30 12:38:43,741 - INFO - Training set: (243, 13)
+2025-10-30 12:38:43,741 - INFO - Test set: (61, 13)
+2025-10-30 12:38:43,742 - INFO - Step 4: Training models
+2025-10-30 12:38:43,742 - INFO - Starting model training with cross-validation
+2025-10-30 12:38:43,742 - INFO - Creating machine learning models
+2025-10-30 12:38:43,742 - INFO - Created 5 different models
+2025-10-30 12:38:43,742 - INFO - Training logistic_regression
+2025-10-30 12:38:48,270 - INFO - logistic_regression - Best score: 0.8270, Best params: {'C': 0.1, 'solver': 'liblinear'}
+2025-10-30 12:38:48,273 - INFO - Training random_forest
+2025-10-30 12:38:53,367 - INFO - random_forest - Best score: 0.8107, Best params: {'max_depth': 10, 'min_samples_split': 2, 'n_estimators': 200}
+2025-10-30 12:38:53,367 - INFO - Training gradient_boosting
+2025-10-30 12:38:56,958 - INFO - gradient_boosting - Best score: 0.8065, Best params: {'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 200}
+2025-10-30 12:38:56,958 - INFO - Training svm
+2025-10-30 12:38:57,261 - INFO - svm - Best score: 0.8350, Best params: {'C': 0.1, 'kernel': 'rbf'}
+2025-10-30 12:38:57,261 - INFO - Training decision_tree
+2025-10-30 12:38:57,416 - INFO - decision_tree - Best score: 0.7570, Best params: {'max_depth': 10, 'min_samples_split': 10}
+2025-10-30 12:38:57,417 - INFO - Best model: svm with score: 0.8350
+2025-10-30 12:38:57,417 - INFO - Step 5: Evaluating models
+2025-10-30 12:38:57,418 - INFO - Evaluating all models on test set
+2025-10-30 12:38:57,418 - INFO - Evaluating model performance
+2025-10-30 12:38:57,432 - INFO - Model evaluation completed - Accuracy: 0.8197
+2025-10-30 12:38:57,433 - INFO - logistic_regression - Test Accuracy: 0.8197
+2025-10-30 12:38:57,433 - INFO - Evaluating model performance
+2025-10-30 12:38:57,464 - INFO - Model evaluation completed - Accuracy: 0.8033
+2025-10-30 12:38:57,465 - INFO - random_forest - Test Accuracy: 0.8033
+2025-10-30 12:38:57,465 - INFO - Evaluating model performance
+2025-10-30 12:38:57,476 - INFO - Model evaluation completed - Accuracy: 0.7705
+2025-10-30 12:38:57,477 - INFO - gradient_boosting - Test Accuracy: 0.7705
+2025-10-30 12:38:57,477 - INFO - Evaluating model performance
+2025-10-30 12:38:57,490 - INFO - Model evaluation completed - Accuracy: 0.8361
+2025-10-30 12:38:57,490 - INFO - svm - Test Accuracy: 0.8361
+2025-10-30 12:38:57,491 - INFO - Evaluating model performance
+2025-10-30 12:38:57,501 - INFO - Model evaluation completed - Accuracy: 0.6721
+2025-10-30 12:38:57,501 - INFO - decision_tree - Test Accuracy: 0.6721
+2025-10-30 12:38:57,501 - INFO - ML pipeline completed successfully
+2025-10-30 12:38:57,503 - INFO - Performance report generated
+2025-10-30 12:38:57,506 - INFO - Model does not support feature importance
+2025-10-30 12:38:57,507 - INFO - Best model doesn't support feature importance visualization
+2025-10-30 12:38:57,509 - INFO - Model saved to best_heart_disease_model.pkl
+2025-10-30 12:38:57,510 - INFO - Performance report generated
+2025-10-30 12:38:57,511 - ERROR - Error saving pipeline results: Object of type ObjectDType is not JSON serializable
+2025-10-30 12:38:57,511 - INFO - Heart Disease Prediction System completed successfully

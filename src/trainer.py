@@ -14,7 +14,7 @@ class ModelTrainer:
     Coordinates data loading, preprocessing, model training, and evaluation
     """
     
-    def _init_(self, data_path: str):
+    def __init__(self, data_path: str):  # FIXED: __init__ not _init_
         self.data_path = data_path
         self.data_loader = DataLoader(data_path)
         self.preprocessor = DataPreprocessor()
@@ -24,7 +24,7 @@ class ModelTrainer:
         
     def _setup_logger(self) -> logging.Logger:
         """Setup logger for training operations"""
-        logger = logging.getLogger(_name_)
+        logger = logging.getLogger(__name__)  # FIXED: __name__ not _name_
         if not logger.handlers:
             handler = logging.StreamHandler()
             formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -189,7 +189,7 @@ class ModelTrainer:
             'best_model_info': {
                 'name': self.results['best_model_name'],
                 'cv_score': self.results['best_score'],
-                'type': type(self.results['best_model'])._name_
+                'type': type(self.results['best_model']).__name__  # FIXED: __name__ not _name_
             },
             'data_info': self.results['data_info'],
             'preprocessing_info': self.results['preprocessing_info'],

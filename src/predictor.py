@@ -12,7 +12,7 @@ class Predictor:
     Uses trained models to make predictions with proper preprocessing
     """
     
-    def _init_(self, model_path: str, preprocessor: Optional[DataPreprocessor] = None):
+    def __init__(self, model_path: str, preprocessor: Optional[DataPreprocessor] = None):  # FIXED: __init__ not _init_
         self.model_path = model_path
         self.model = self._load_model(model_path)
         self.preprocessor = preprocessor
@@ -20,7 +20,7 @@ class Predictor:
         
     def _setup_logger(self) -> logging.Logger:
         """Setup logger for prediction operations"""
-        logger = logging.getLogger(_name_)
+        logger = logging.getLogger(__name__)  # FIXED: __name__ not _name_
         if not logger.handlers:
             handler = logging.StreamHandler()
             formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -34,7 +34,7 @@ class Predictor:
         try:
             model = joblib.load(model_path)
             self.logger.info(f"Model loaded from {model_path}")
-            self.logger.info(f"Model type: {type(model)._name_}")
+            self.logger.info(f"Model type: {type(model).__name__}")  # FIXED: __name__ not _name_
             return model
         except Exception as e:
             self.logger.error(f"Error loading model: {str(e)}")
