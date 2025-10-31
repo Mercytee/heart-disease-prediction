@@ -24,10 +24,10 @@ def download_dataset():
     data_path = 'data/cleveland.data'
     
     if os.path.exists(data_path):
-        print("✅ Dataset already exists")
+        print(" Dataset already exists")
         return True
         
-    print("📥 Downloading dataset...")
+    print(" Downloading dataset...")
     try:
         # Create data directory
         os.makedirs('data', exist_ok=True)
@@ -47,12 +47,12 @@ def download_dataset():
         # Save to local file
         df.to_csv(data_path, index=False)
         
-        print(f"✅ Dataset downloaded successfully!")
-        print(f"📊 Dataset shape: {df.shape}")
+        print(f" Dataset downloaded successfully!")
+        print(f" Dataset shape: {df.shape}")
         return True
         
     except Exception as e:
-        print(f"❌ Error downloading dataset: {e}")
+        print(f" Error downloading dataset: {e}")
         print("Please download manually from:")
         print("https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data")
         print("And save as 'data/cleveland.data'")
@@ -65,15 +65,15 @@ def test_imports():
         from src.preprocessor import DataPreprocessor
         from src.model_factory import ModelFactory
         from src.trainer import ModelTrainer
-        print("✅ All imports successful!")
+        print(" All imports successful!")
         return True
     except ImportError as e:
-        print(f"❌ Import error: {e}")
+        print(f"Import error: {e}")
         print("Please install required packages:")
         print("pip install pandas numpy scikit-learn matplotlib seaborn joblib")
         return False
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
         return False
 
 def main():
@@ -84,7 +84,7 @@ def main():
     logger = logging.getLogger(__name__)
     
     print("=" * 60)
-    print("🫀 HEART DISEASE PREDICTION SYSTEM")
+    print(" HEART DISEASE PREDICTION SYSTEM")
     print("=" * 60)
     
     try:
@@ -100,12 +100,12 @@ def main():
         
         # Initialize the trainer
         data_path = 'data/cleveland.data'
-        print(f"📁 Using dataset: {data_path}")
+        print(f" Using dataset: {data_path}")
         
         trainer = ModelTrainer(data_path)
         
         # Run complete pipeline
-        print("\n🚀 Running complete ML pipeline...")
+        print("\n Running complete ML pipeline...")
         print("1. Loading data...")
         print("2. Preprocessing...") 
         print("3. Training models...")
@@ -115,7 +115,7 @@ def main():
         
         # Generate and display report
         print("\n" + "=" * 60)
-        print("📊 HEART DISEASE PREDICTION MODEL PERFORMANCE REPORT")
+        print(" HEART DISEASE PREDICTION MODEL PERFORMANCE REPORT")
         print("=" * 60)
         
         report = trainer.generate_report()
@@ -124,11 +124,11 @@ def main():
         # Display best model
         best_model_name = type(results['best_model']).__name__
         best_score = results['best_score']
-        print(f"\n🎯 BEST MODEL: {best_model_name}")
-        print(f"📈 Cross-Validation Score: {best_score:.4f}")
+        print(f"\n BEST MODEL: {best_model_name}")
+        print(f" Cross-Validation Score: {best_score:.4f}")
         
         # Show feature importance
-        print(f"\n🔍 Top 5 Most Important Features:")
+        print(f"\n Top 5 Most Important Features:")
         try:
             trainer.plot_feature_importance(top_n=5)
         except Exception as e:
@@ -137,33 +137,33 @@ def main():
         # Save best model
         model_path = 'best_heart_disease_model.pkl'
         trainer.model_factory.save_model(results['best_model'], model_path)
-        print(f"💾 Best model saved to: {model_path}")
+        print(f" Best model saved to: {model_path}")
         
         # Save results
         results_path = 'pipeline_results.json'
         trainer.save_pipeline_results(results_path)
-        print(f"📄 Pipeline results saved to: {results_path}")
+        print(f" Pipeline results saved to: {results_path}")
         
         print("\n" + "=" * 60)
-        print("✅ HEART DISEASE PREDICTION SYSTEM COMPLETED SUCCESSFULLY!")
+        print(" HEART DISEASE PREDICTION SYSTEM COMPLETED SUCCESSFULLY!")
         print("=" * 60)
         
         logger.info("Heart Disease Prediction System completed successfully")
         
     except FileNotFoundError as e:
         logger.error(f"File not found: {e}")
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         print("Please make sure the dataset exists at 'data/cleveland.data'")
         
     except Exception as e:
         logger.error(f"Application failed: {str(e)}")
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         import traceback
         traceback.print_exc()
 
 def quick_test():
     """Quick test function to verify basic functionality"""
-    print("\n🔧 Running quick test...")
+    print("\n Running quick test...")
     try:
         from src.data_loader import DataLoader
         from src.preprocessor import DataPreprocessor
@@ -171,17 +171,17 @@ def quick_test():
         # Test data loading
         loader = DataLoader('data/cleveland.data')
         df = loader.load_data()
-        print(f"✅ Data loading: {df.shape[0]} samples, {df.shape[1]} features")
+        print(f" Data loading: {df.shape[0]} samples, {df.shape[1]} features")
         
         # Test preprocessing
         preprocessor = DataPreprocessor()
         X, y = preprocessor.preprocess_data(df)
-        print(f"✅ Data preprocessing: {X.shape[1]} features after processing")
-        print(f"✅ Target distribution: {y.value_counts().to_dict()}")
+        print(f" Data preprocessing: {X.shape[1]} features after processing")
+        print(f" Target distribution: {y.value_counts().to_dict()}")
         
         return True
     except Exception as e:
-        print(f"❌ Quick test failed: {e}")
+        print(f" Quick test failed: {e}")
         import traceback
         traceback.print_exc()
         return False
