@@ -23,7 +23,7 @@
       "slope",
       "ca",
       "thal",
-      "target"
+      "num"
     ],
     "data_types": {
       "age": "object",
@@ -39,7 +39,7 @@
       "slope": "object",
       "ca": "object",
       "thal": "object",
-      "target": "object"
+      "num": "object"
     },
     "missing_values": {
       "age": 0,
@@ -55,7 +55,7 @@
       "slope": 0,
       "ca": 4,
       "thal": 2,
-      "target": 0
+      "num": 0
     },
     "description": {
       "age": {
@@ -136,7 +136,7 @@
         "top": "3.0",
         "freq": 166
       },
-      "target": {
+      "num": {
         "count": 304,
         "unique": 6,
         "top": "0",
@@ -242,5 +242,5 @@
     }
   ],
   "pipeline_status": "completed",
-  "execution_timestamp": "2025-10-31T10:03:47.046157"
+  "execution_timestamp": "2025-10-31T14:01:53.464952"
 }

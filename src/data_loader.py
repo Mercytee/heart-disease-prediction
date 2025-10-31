@@ -1,21 +1,15 @@
 import pandas as pd
 import numpy as np
-from typing import Tuple, Optional, Dict, Any
 import logging
+from typing import Optional, Dict, Any
 import os
-from .base_classes import BaseDataLoader
 
-class DataLoader(BaseDataLoader):
-    """
-    Data loader class for heart disease dataset with enhanced OOP
-    Implements BaseDataLoader interface with property decorators
-    """
-    
-    def _init_(self, file_path: str):
+class DataLoader:
+    def __init__(self, file_path: str):
         self._file_path = file_path
         self._column_names = [
             "age", "sex", "cp", "trestbps", "chol", "fbs", "restecg",
-            "thalach", "exang", "oldpeak", "slope", "ca", "thal", "target"
+            "thalach", "exang", "oldpeak", "slope", "ca", "thal", "num"
         ]
         self.logger = self._setup_logger()
         self._data = None
@@ -30,8 +24,6 @@ class DataLoader(BaseDataLoader):
         """Setter for file_path with validation"""
         if not isinstance(value, str):
             raise ValueError("File path must be a string")
-        if not value.endswith('.csv'):
-            raise ValueError("File must be a CSV file")
         self._file_path = value
     
     @property
@@ -42,7 +34,7 @@ class DataLoader(BaseDataLoader):
     @property
     def column_names(self) -> list:
         """Getter for column names"""
-        return self._column_names.copy()  # Return copy to prevent modification
+        return self._column_names.copy()
     
     @property
     def is_data_loaded(self) -> bool:
@@ -60,14 +52,14 @@ class DataLoader(BaseDataLoader):
         return logger
         
     def load_data(self) -> pd.DataFrame:
-        """Implementation of abstract method from BaseDataLoader"""
+        """Load data from file"""
         try:
             self.logger.info(f"Loading data from {self.file_path}")
             
             if not os.path.exists(self.file_path):
                 raise FileNotFoundError(f"Data file not found at {self.file_path}")
             
-            # Load data with proper configuration and convert to numeric
+            # Load data with proper configuration
             df = pd.read_csv(
                 self.file_path, 
                 names=self.column_names, 
@@ -88,15 +80,7 @@ class DataLoader(BaseDataLoader):
             raise
     
     def get_data_info(self, df: pd.DataFrame = None) -> Dict[str, Any]:
-        """
-        Get comprehensive information about the dataset
-        
-        Args:
-            df: DataFrame to analyze. If None, uses loaded data
-            
-        Returns:
-            dict: Comprehensive dataset information
-        """
+        """Get comprehensive information about the dataset"""
         if df is None:
             if self._data is None:
                 self.logger.warning("No data loaded. Call load_data() first.")
@@ -109,7 +93,6 @@ class DataLoader(BaseDataLoader):
             'data_types': df.dtypes.to_dict(),
             'missing_values': df.isnull().sum().to_dict(),
             'description': df.describe().to_dict(),
-            'memory_usage': df.memory_usage(deep=True).to_dict(),
             'target_distribution': df['num'].value_counts().to_dict() if 'num' in df.columns else {}
         }
         
@@ -117,7 +100,7 @@ class DataLoader(BaseDataLoader):
         return info
     
     def validate_data(self, df: pd.DataFrame = None) -> bool:
-        """Implementation of abstract method from BaseDataLoader"""
+        """Validate data structure"""
         if df is None:
             if self._data is None:
                 self.logger.error("No data to validate")
@@ -138,27 +121,8 @@ class DataLoader(BaseDataLoader):
             
         self.logger.info("Data validation passed")
         return True
-    
-    def get_data_info(self, df: pd.DataFrame = None) -> Dict[str, Any]:
-        """Implementation of abstract method from BaseDataLoader"""
-        if df is None:
-            if self._data is None:
-                self.logger.warning("No data loaded. Call load_data() first.")
-                return {}
-            df = self._data
-            
-        info = {
-            'shape': df.shape,
-            'columns': list(df.columns),
-            'data_types': df.dtypes.to_dict(),
-            'missing_values': df.isnull().sum().to_dict(),
-            'description': df.describe().to_dict(),
-            'target_distribution': df['target'].value_counts().to_dict() if 'target' in df.columns else {}
-        }
-        
-        return info
 
-# Enhanced inheritance hierarchy
+
 class MedicalDataLoader(DataLoader):
     """Specialized data loader for medical datasets"""
     

@@ -72,6 +72,9 @@ def test_imports():
         print("Please install required packages:")
         print("pip install pandas numpy scikit-learn matplotlib seaborn joblib")
         return False
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        return False
 
 def main():
     """
@@ -119,7 +122,7 @@ def main():
         print(report.to_string(index=False))
         
         # Display best model
-        best_model_name = type(results['best_model'])._name_
+        best_model_name = type(results['best_model']).__name__
         best_score = results['best_score']
         print(f"\n🎯 BEST MODEL: {best_model_name}")
         print(f"📈 Cross-Validation Score: {best_score:.4f}")
@@ -183,7 +186,7 @@ def quick_test():
         traceback.print_exc()
         return False
 
-if __name__ == "_main_":
+if __name__ == "__main__":
     # Check if user wants quick test
     if len(sys.argv) > 1 and sys.argv[1] == 'test':
         quick_test()
