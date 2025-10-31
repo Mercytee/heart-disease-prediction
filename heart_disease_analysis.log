@@ -535,3 +535,69 @@
 2025-10-31 09:54:10,520 - INFO - Performance report generated
 2025-10-31 09:54:10,523 - INFO - Pipeline results saved to pipeline_results.json
 2025-10-31 09:54:10,524 - INFO - Heart Disease Prediction System completed successfully
+2025-10-31 10:01:23,740 - INFO - Starting Heart Disease Prediction System
+2025-10-31 10:01:23,741 - INFO - Starting complete ML pipeline
+2025-10-31 10:01:23,741 - INFO - Step 1: Loading and validating data
+2025-10-31 10:01:23,742 - INFO - Loading data from data/cleveland.data
+2025-10-31 10:01:23,750 - INFO - Successfully loaded data with shape: (304, 14)
+2025-10-31 10:01:23,770 - INFO - Data loaded: 304 samples, 14 features
+2025-10-31 10:01:23,770 - INFO - Data validation passed
+2025-10-31 10:01:23,770 - INFO - Step 2: Preprocessing data
+2025-10-31 10:01:23,770 - INFO - Starting data preprocessing pipeline
+2025-10-31 10:01:23,777 - INFO - Handling missing values
+2025-10-31 10:01:23,778 - INFO - Found 6 missing values
+2025-10-31 10:01:23,780 - INFO - Imputing categorical column: ca
+2025-10-31 10:01:23,782 - INFO - Imputing categorical column: thal
+2025-10-31 10:01:23,783 - INFO - Missing value handling completed
+2025-10-31 10:01:23,783 - INFO - Encoding categorical features
+2025-10-31 10:01:23,783 - INFO - Encoding categorical columns: ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+2025-10-31 10:01:23,785 - INFO - Encoded age with 42 classes
+2025-10-31 10:01:23,787 - INFO - Encoded sex with 3 classes
+2025-10-31 10:01:23,788 - INFO - Encoded cp with 5 classes
+2025-10-31 10:01:23,789 - INFO - Encoded trestbps with 51 classes
+2025-10-31 10:01:23,790 - INFO - Encoded chol with 153 classes
+2025-10-31 10:01:23,790 - INFO - Encoded fbs with 3 classes
+2025-10-31 10:01:23,791 - INFO - Encoded restecg with 4 classes
+2025-10-31 10:01:23,792 - INFO - Encoded thalach with 92 classes
+2025-10-31 10:01:23,793 - INFO - Encoded exang with 3 classes
+2025-10-31 10:01:23,793 - INFO - Encoded oldpeak with 41 classes
+2025-10-31 10:01:23,794 - INFO - Encoded slope with 4 classes
+2025-10-31 10:01:23,795 - INFO - Encoded ca with 5 classes
+2025-10-31 10:01:23,795 - INFO - Encoded thal with 4 classes
+2025-10-31 10:01:23,795 - INFO - Scaling numerical features
+2025-10-31 10:01:23,796 - INFO - Scaling numerical columns: ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+2025-10-31 10:01:23,800 - INFO - Data preprocessing completed successfully
+2025-10-31 10:01:23,800 - INFO - Splitting data with test size: 0.2
+2025-10-31 10:01:23,805 - INFO - Training set: (243, 13)
+2025-10-31 10:01:23,808 - INFO - Test set: (61, 13)
+2025-10-31 10:01:23,809 - INFO - Train target distribution: {0: 132, 1: 111}
+2025-10-31 10:01:23,811 - INFO - Test target distribution: {0: 33, 1: 28}
+2025-10-31 10:01:23,811 - INFO - Step 3: Training and evaluating models
+2025-10-31 10:01:23,812 - INFO - Starting model training with cross-validation
+2025-10-31 10:01:23,812 - INFO - Creating machine learning models using Strategy Pattern
+2025-10-31 10:01:23,812 - INFO - Created 5 different models using strategies
+2025-10-31 10:01:23,812 - INFO - Training random_forest
+2025-10-31 10:01:32,943 - INFO - Training logistic_regression
+2025-10-31 10:01:33,171 - INFO - Training svm
+2025-10-31 10:01:33,478 - INFO - Training gradient_boosting
+2025-10-31 10:01:37,544 - INFO - Training decision_tree
+2025-10-31 10:01:37,726 - INFO - Best model: svm with score: 0.8350
+2025-10-31 10:01:37,727 - INFO - Evaluating all models on test set
+2025-10-31 10:01:37,727 - INFO - Evaluating model performance
+2025-10-31 10:01:37,769 - INFO - random_forest - Test Accuracy: 0.8033
+2025-10-31 10:01:37,770 - INFO - Evaluating model performance
+2025-10-31 10:01:37,784 - INFO - logistic_regression - Test Accuracy: 0.8197
+2025-10-31 10:01:37,785 - INFO - Evaluating model performance
+2025-10-31 10:01:37,800 - INFO - svm - Test Accuracy: 0.8361
+2025-10-31 10:01:37,800 - INFO - Evaluating model performance
+2025-10-31 10:01:37,815 - INFO - gradient_boosting - Test Accuracy: 0.7705
+2025-10-31 10:01:37,815 - INFO - Evaluating model performance
+2025-10-31 10:01:37,828 - INFO - decision_tree - Test Accuracy: 0.6721
+2025-10-31 10:01:37,847 - INFO - ML pipeline completed successfully
+2025-10-31 10:01:37,849 - INFO - Performance report generated
+2025-10-31 10:01:37,856 - INFO - Model does not support feature importance
+2025-10-31 10:01:37,857 - INFO - Best model doesn't support feature importance visualization
+2025-10-31 10:01:37,860 - INFO - Model saved to best_heart_disease_model.pkl
+2025-10-31 10:01:37,860 - INFO - Performance report generated
+2025-10-31 10:01:37,864 - INFO - Pipeline results saved to pipeline_results.json
+2025-10-31 10:01:37,865 - INFO - Heart Disease Prediction System completed successfully
