@@ -1,7 +1,7 @@
 {
   "best_model_info": {
     "name": "svm",
-    "cv_score": 0.8350340136054422,
+    "cv_score": 0.8434523809523808,
     "type": "SVC"
   },
   "data_info": {
@@ -170,77 +170,82 @@
       "thal"
     ],
     "scaler_fitted": true,
-    "imputer_fitted": false,
+    "imputer_fitted": true,
     "label_encoders": [
-      "age",
       "sex",
       "cp",
-      "trestbps",
-      "chol",
       "fbs",
       "restecg",
-      "thalach",
       "exang",
-      "oldpeak",
       "slope",
       "ca",
       "thal"
     ],
-    "numerical_columns_count": 0,
-    "categorical_columns_count": 13
+    "numerical_columns_count": 5,
+    "categorical_columns_count": 8
   },
   "all_models_performance": [
     {
-      "Model": "svm",
-      "CV Score": 0.8350340136054422,
-      "Test Accuracy": 0.8360655737704918,
-      "Test Precision": 0.8436263425664218,
-      "Test Recall": 0.8360655737704918,
-      "Test F1-Score": 0.8362418473470827,
-      "Best Parameters": "{'C': 0.1, 'kernel': 'rbf'}",
-      "ROC AUC": 0.9491341991341992
+      "Model": "Random Forest",
+      "CV Score": "0.8107",
+      "Test Accuracy": "0.8033",
+      "Test Precision": "0.8436",
+      "Test Recall": "0.8033",
+      "Test F1-Score": "0.8006",
+      "ROC AUC": "0.9405",
+      "Best Parameters": "{'max_depth': 15, 'min_samples_split': 2, 'n_estimators': 100}"
     },
     {
-      "Model": "logistic_regression",
-      "CV Score": 0.8269557823129251,
-      "Test Accuracy": 0.819672131147541,
-      "Test Precision": 0.8307607692853595,
-      "Test Recall": 0.819672131147541,
-      "Test F1-Score": 0.819672131147541,
-      "Best Parameters": "{'C': 0.1, 'solver': 'liblinear'}",
-      "ROC AUC": 0.9339826839826839
+      "Model": "Logistic Regression",
+      "CV Score": "0.8270",
+      "Test Accuracy": "0.8525",
+      "Test Precision": "0.8743",
+      "Test Recall": "0.8525",
+      "Test F1-Score": "0.8519",
+      "ROC AUC": "0.9426",
+      "Best Parameters": "{'C': 1, 'penalty': 'l2', 'solver': 'liblinear'}"
     },
     {
-      "Model": "random_forest",
-      "CV Score": 0.8107142857142857,
-      "Test Accuracy": 0.8032786885245902,
-      "Test Precision": 0.8436058071050756,
-      "Test Recall": 0.8032786885245902,
-      "Test F1-Score": 0.8006174153715138,
-      "Best Parameters": "{'max_depth': 10, 'min_samples_split': 2, 'n_estimators': 200}",
-      "ROC AUC": 0.9323593073593073
+      "Model": "Svm",
+      "CV Score": "0.8435",
+      "Test Accuracy": "0.8361",
+      "Test Precision": "0.8436",
+      "Test Recall": "0.8361",
+      "Test F1-Score": "0.8362",
+      "ROC AUC": "0.9437",
+      "Best Parameters": "{'C': 0.1, 'gamma': 'scale', 'kernel': 'rbf'}"
     },
     {
-      "Model": "gradient_boosting",
-      "CV Score": 0.806547619047619,
-      "Test Accuracy": 0.7868852459016393,
-      "Test Precision": 0.7975303385139451,
-      "Test Recall": 0.7868852459016393,
-      "Test F1-Score": 0.7868852459016393,
-      "Best Parameters": "{'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 200}",
-      "ROC AUC": 0.8971861471861471
+      "Model": "Gradient Boosting",
+      "CV Score": "0.7902",
+      "Test Accuracy": "0.7869",
+      "Test Precision": "0.8064",
+      "Test Recall": "0.7869",
+      "Test F1-Score": "0.7861",
+      "ROC AUC": "0.9210",
+      "Best Parameters": "{'learning_rate': 0.05, 'max_depth': 3, 'n_estimators': 100}"
     },
     {
-      "Model": "decision_tree",
-      "CV Score": 0.7569727891156464,
-      "Test Accuracy": 0.6721311475409836,
-      "Test Precision": 0.6786319954776711,
-      "Test Recall": 0.6721311475409836,
-      "Test F1-Score": 0.6724836946941652,
-      "Best Parameters": "{'max_depth': 10, 'min_samples_split': 10}",
-      "ROC AUC": 0.7445887445887445
+      "Model": "Decision Tree",
+      "CV Score": "0.7286",
+      "Test Accuracy": "0.6721",
+      "Test Precision": "0.6842",
+      "Test Recall": "0.6721",
+      "Test F1-Score": "0.6716",
+      "ROC AUC": "0.7413",
+      "Best Parameters": "{'max_depth': 10, 'min_samples_split': 10}"
+    },
+    {
+      "Model": "Xgboost",
+      "CV Score": "0.8065",
+      "Test Accuracy": "0.7869",
+      "Test Precision": "0.8185",
+      "Test Recall": "0.7869",
+      "Test F1-Score": "0.7848",
+      "ROC AUC": "0.9199",
+      "Best Parameters": "{'learning_rate': 0.05, 'max_depth': 3, 'n_estimators': 100}"
     }
   ],
   "pipeline_status": "completed",
-  "execution_timestamp": "2025-10-31T14:30:56.234678"
+  "execution_timestamp": "2025-11-01T08:50:07.645932"
 }

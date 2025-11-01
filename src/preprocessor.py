@@ -75,13 +75,18 @@ class DataPreprocessor:
     
     def _encode_categorical_features(self, X: pd.DataFrame) -> pd.DataFrame:
         self.logger.info("Encoding categorical features")
-        categorical_cols = X.select_dtypes(include=['object']).columns
+        
+        # Define actual categorical columns based on medical dataset knowledge
+        categorical_cols = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'ca', 'thal']
+        
+        # Only encode columns that exist and are actually categorical
+        categorical_cols = [col for col in categorical_cols if col in X.columns]
         
         if len(categorical_cols) == 0:
             self.logger.info("No categorical features to encode")
             return X
         
-        self.logger.info(f"Encoding categorical columns: {list(categorical_cols)}")
+        self.logger.info(f"Encoding categorical columns: {categorical_cols}")
         for col in categorical_cols:
             self.label_encoders[col] = LabelEncoder()
             X[col] = self.label_encoders[col].fit_transform(X[col].astype(str))
@@ -91,13 +96,31 @@ class DataPreprocessor:
     
     def _scale_features(self, X: pd.DataFrame) -> pd.DataFrame:
         self.logger.info("Scaling numerical features")
-        numerical_cols = X.select_dtypes(include=[np.number]).columns
+        
+        # Define actual numerical columns (exclude categorical ones we encoded)
+        numerical_cols = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
+        
+        # Only scale columns that exist and are numerical
+        numerical_cols = [col for col in numerical_cols if col in X.columns]
+        
+        # Also include the engineered features if they exist
+        engineered_cols = ['bp_category', 'chol_category', 'age_group', 'hr_zone']
+        numerical_cols.extend([col for col in engineered_cols if col in X.columns])
         
         if len(numerical_cols) == 0:
             self.logger.info("No numerical features to scale")
             return X
         
-        self.logger.info(f"Scaling numerical columns: {list(numerical_cols)}")
+        self.logger.info(f"Scaling numerical columns: {numerical_cols}")
+        
+        # Ensure all numerical columns are actually numeric
+        for col in numerical_cols:
+            X[col] = pd.to_numeric(X[col], errors='coerce')
+        
+        # Handle any NaN values created during conversion
+        if X[numerical_cols].isnull().any().any():
+            X[numerical_cols] = self.imputer.fit_transform(X[numerical_cols])
+        
         X[numerical_cols] = self.scaler.fit_transform(X[numerical_cols])
         return X
     
@@ -183,7 +206,7 @@ class HeartDiseasePreprocessor(MedicalDataPreprocessor):
     def create_clinical_features(self, X: pd.DataFrame) -> pd.DataFrame:
         """Create additional clinical features"""
         self.logger.info("Creating clinical features")
-        
+    
         # Age groups
         X['age_group'] = pd.cut(X['age'], bins=[0, 40, 60, 100], labels=[0, 1, 2])
         
@@ -198,15 +221,62 @@ class HeartDiseasePreprocessor(MedicalDataPreprocessor):
         
         return X
     
-    def preprocess_data(self, df: pd.DataFrame, target_col: str = 'num') -> Tuple[pd.DataFrame, pd.Series]:
-        """Specialized preprocessing for heart disease data"""
-        self.logger.info("Starting heart disease data preprocessing")
-        
-        # Perform medical preprocessing
-        X, y = super().preprocess_data(df, target_col)
-        
-        # Create clinical features
-        X = self.create_clinical_features(X)
-        
-        self.logger.info("Heart disease data preprocessing completed")
-        return X, y
+def preprocess_data(self, df: pd.DataFrame, target_col: str = 'num') -> Tuple[pd.DataFrame, pd.Series]:
+    self.logger.info("Starting enhanced data preprocessing pipeline")
+    data = df.copy()
+    
+    # Convert target
+    data[target_col] = pd.to_numeric(data[target_col], errors='coerce')
+    data[target_col].fillna(0, inplace=True)
+    data[target_col] = data[target_col].apply(lambda x: 1 if float(x) > 0 else 0)
+    
+    X = data.drop(columns=[target_col])
+    y = data[target_col]
+    
+    # Enhanced preprocessing pipeline in correct order
+    X = self._handle_missing_values(X)
+    X = self._create_medical_features(X)  # Feature engineering first
+    X = self._encode_categorical_features(X)  # Then encode categoricals
+    X = self._scale_features(X)  # Finally scale numericals
+    
+    self.feature_names = X.columns.tolist()
+    self.is_fitted = True
+    self.logger.info("Enhanced data preprocessing completed successfully")
+    return X, y
+
+def _create_medical_features(self, X: pd.DataFrame) -> pd.DataFrame:
+    """Create medically relevant features"""
+    self.logger.info("Creating medical feature engineering")
+    
+    # Ensure numerical columns are properly converted first
+    numerical_cols = ['age', 'trestbps', 'chol', 'thalach']
+    for col in numerical_cols:
+        if col in X.columns:
+            X[col] = pd.to_numeric(X[col], errors='coerce')
+    
+    # Blood pressure categories
+    if 'trestbps' in X.columns:
+        X['bp_category'] = pd.cut(X['trestbps'], 
+                                 bins=[0, 120, 140, 200, 300],
+                                 labels=[0, 1, 2, 3])
+    
+    # Cholesterol categories
+    if 'chol' in X.columns:
+        X['chol_category'] = pd.cut(X['chol'],
+                                   bins=[0, 200, 240, 300, 600],
+                                   labels=[0, 1, 2, 3])
+    
+    # Age groups
+    if 'age' in X.columns:
+        X['age_group'] = pd.cut(X['age'],
+                               bins=[20, 40, 50, 60, 70, 100],
+                               labels=[0, 1, 2, 3, 4])
+    
+    # Heart rate zones
+    if 'thalach' in X.columns:
+        X['hr_zone'] = pd.cut(X['thalach'],
+                             bins=[0, 100, 120, 140, 160, 200, 300],
+                             labels=[0, 1, 2, 3, 4, 5])
+    
+    self.logger.info("Medical feature engineering completed")
+    return X
