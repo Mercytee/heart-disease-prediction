@@ -17,5 +17,5 @@ def download_heart_disease_data():
         print(f" Error: {e}")  # Print error message if download fails
         return None  # Return None if download fails
 
-if __name__ == "__main__":  # Check if script is run directly (note: should be "__main__" with double underscores)
+if __name__ == "__main__":  # Check if script is run directly 
     download_heart_disease_data()  # Call the download function when script is executed directly
