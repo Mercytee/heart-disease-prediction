@@ -30,7 +30,7 @@ class BaseTrainer(ABC):
 
 class ModelTrainer(BaseTrainer):
     """
-    Enhanced Main training class with advanced OOP features
+    Enhanced Main training class with  OOP features
     Coordinates data loading, preprocessing, model training, and evaluation
     """
     
