@@ -215,7 +215,7 @@ class HeartDiseasePreprocessor(MedicalDataPreprocessor):
                                 bins=[0, 120, 140, 1000], 
                                 labels=[0, 1, 2])  # Normal, Elevated, High
         
-        # Cholesterol ratio (if HDL available, but we'll use approximation)
+        # Cholesterol ratio (using approximation)
         if 'chol' in X.columns and 'thalach' in X.columns:
             X['risk_ratio'] = X['chol'] / X['thalach']  # Create risk ratio feature
         
