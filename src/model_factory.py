@@ -29,7 +29,7 @@ class ModelFactory:
         self.best_score = 0  # Best cross-validation score
         self.best_params = None  # Best hyperparameters found
         
-        # Setup logger - SIMPLIFIED APPROACH
+        # Setup logger 
         self.logger = logging.getLogger('model_factory')  # Create logger instance
         if not self.logger.handlers:  # Check if handlers already exist
             handler = logging.StreamHandler()  # Create console handler
@@ -137,7 +137,7 @@ class ModelFactory:
                     best_params = {}  # No parameters to store
                     best_score = cross_val_score(best_model, X_train, y_train, cv=5, scoring='accuracy').mean()  # Calculate CV score
                 
-                # ✅ CRITICAL FIX: Update the model in self.models with the trained one
+                #  CRITICAL FIX: Update the model in self.models with the trained one
                 self.models[name]['model'] = best_model  # Store trained model
                 self.models[name]['best_params'] = best_params  # Store best parameters
                 self.models[name]['cv_score'] = best_score  # Store cross-validation score
