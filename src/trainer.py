@@ -326,8 +326,7 @@ class MedicalModelTrainer(ModelTrainer):
         """Medical-specific data quality checks - ensures data meets medical standards"""
         # Implement medical data validation logic
         self.logger.info("Performing medical data quality checks...")
-        # Check for data completeness, value ranges, etc. 
-        
+        # Check for data completeness, value ranges,  
         # Actual implementation would include checks like:
         # - Valid value ranges for medical measurements
         # - Required fields for medical compliance
