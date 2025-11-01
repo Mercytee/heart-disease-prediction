@@ -97,7 +97,7 @@ class DataPreprocessor:
     def _scale_features(self, X: pd.DataFrame) -> pd.DataFrame:
         self.logger.info("Scaling numerical features")
         
-        # Define actual numerical columns (exclude categorical ones we encoded)
+        # Define actual numerical columns (exclude categorical ones that were encoded)
         numerical_cols = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
         
         # Only scale columns that exist and are numerical
