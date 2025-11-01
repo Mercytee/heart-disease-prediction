@@ -1,94 +1,277 @@
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.svm import SVC
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
-import numpy as np
-import logging
-from typing import Dict, Any, Optional, List, Tuple  # ADDED List import
-import joblib
 import pandas as pd
-from .base_classes import BaseModel, ModelStrategy
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import cross_val_score, GridSearchCV
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, roc_auc_score
+from sklearn.exceptions import NotFittedError
+import logging
+import joblib
+from typing import Dict, Any, List, Tuple, Optional
 
-# Strategy Pattern Implementations
-class RandomForestStrategy(ModelStrategy):
-    """Concrete strategy for Random Forest"""
-    
-    def create_model(self) -> Any:
-        return RandomForestClassifier(random_state=42)
-    
-    def get_hyperparameters(self) -> Dict[str, Any]:
-        return {
-            'n_estimators': [100, 200],
-            'max_depth': [10, 20, None],
-            'min_samples_split': [2, 5]
-        }
+# ADD XGBoost import
+try:
+    from xgboost import XGBClassifier
+    XGB_AVAILABLE = True
+except ImportError:
+    XGB_AVAILABLE = False
+    print("XGBoost not available. Install with: pip install xgboost")
 
-class LogisticRegressionStrategy(ModelStrategy):
-    """Concrete strategy for Logistic Regression"""
-    
-    def create_model(self) -> Any:
-        return LogisticRegression(random_state=42, max_iter=1000)
-    
-    def get_hyperparameters(self) -> Dict[str, Any]:
-        return {
-            'C': [0.1, 1, 10],
-            'solver': ['liblinear', 'lbfgs']
-        }
-
-class SVMStrategy(ModelStrategy):
-    """Concrete strategy for SVM"""
-    
-    def create_model(self) -> Any:
-        return SVC(random_state=42, probability=True)
-    
-    def get_hyperparameters(self) -> Dict[str, Any]:
-        return {
-            'C': [0.1, 1, 10],
-            'kernel': ['linear', 'rbf']
-        }
-
-class GradientBoostingStrategy(ModelStrategy):
-    """Concrete strategy for Gradient Boosting"""
-    
-    def create_model(self) -> Any:
-        return GradientBoostingClassifier(random_state=42)
-    
-    def get_hyperparameters(self) -> Dict[str, Any]:
-        return {
-            'n_estimators': [100, 200],
-            'learning_rate': [0.05, 0.1],
-            'max_depth': [3, 5]
-        }
-
-class DecisionTreeStrategy(ModelStrategy):
-    """Concrete strategy for Decision Tree"""
-    
-    def create_model(self) -> Any:
-        return DecisionTreeClassifier(random_state=42)
-    
-    def get_hyperparameters(self) -> Dict[str, Any]:
-        return {
-            'max_depth': [5, 10, 20],
-            'min_samples_split': [2, 5, 10]
-        }
-
-class ModelFactory(BaseModel):
-    """
-    Enhanced Factory class with Strategy Pattern and Property Decorators
-    """
-    
+class ModelFactory:
     def __init__(self):
-        self._models = {}
+        print("DEBUG: ModelFactory _init_ called")  # Debug line
+        # Initialize all attributes first
+        self.models = {}
         self._best_model = None
-        self._best_score = 0
-        self._best_model_name = None
-        self.training_results = {}
-        self.logger = self._setup_logger()
-        self._strategies = self._initialize_strategies()
+        self.best_model_name = None
+        self.best_score = 0
+        self.best_params = None
         
-    # Property decorators for encapsulation
+        # Setup logger - SIMPLIFIED APPROACH
+        self.logger = logging.getLogger('model_factory')
+        if not self.logger.handlers:
+            handler = logging.StreamHandler()
+            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            handler.setFormatter(formatter)
+            self.logger.addHandler(handler)
+            self.logger.setLevel(logging.INFO)
+        
+        self.logger.info("ModelFactory initialized successfully")
+    
+    def create_models(self) -> Dict[str, Any]:
+        """Create multiple machine learning models"""
+        self.logger.info("Creating machine learning models")
+        
+        # Base models configuration
+        self.models = {
+            'random_forest': {
+                'model': RandomForestClassifier(random_state=42),
+                'params': {
+                    'n_estimators': [100, 200],
+                    'max_depth': [10, 15, None],
+                    'min_samples_split': [2, 5]
+                }
+            },
+            'logistic_regression': {
+                'model': LogisticRegression(random_state=42, max_iter=2000),
+                'params': {
+                    'C': [0.1, 1, 10],
+                    'penalty': ['l2'],
+                    'solver': ['liblinear']
+                }
+            },
+            'svm': {
+                'model': SVC(random_state=42, probability=True),
+                'params': {
+                    'C': [0.1, 1, 10],
+                    'kernel': ['linear', 'rbf'],
+                    'gamma': ['scale']
+                }
+            },
+            'gradient_boosting': {
+                'model': GradientBoostingClassifier(random_state=42),
+                'params': {
+                    'n_estimators': [100, 200],
+                    'learning_rate': [0.1, 0.05],
+                    'max_depth': [3, 4]
+                }
+            },
+            'decision_tree': {
+                'model': DecisionTreeClassifier(random_state=42),
+                'params': {
+                    'max_depth': [10, 15, None],
+                    'min_samples_split': [2, 5, 10]
+                }
+            }
+        }
+        
+        # Add XGBoost if available
+        if XGB_AVAILABLE:
+            self.models['xgboost'] = {
+                'model': XGBClassifier(random_state=42, eval_metric='logloss'),
+                'params': {
+                    'n_estimators': [100, 200],
+                    'max_depth': [3, 5],
+                    'learning_rate': [0.1, 0.05]
+                }
+            }
+        
+        self.logger.info(f"Created {len(self.models)} models")
+        return self.models
+    
+    def train(self, X_train: pd.DataFrame, y_train: pd.Series, use_grid_search: bool = True) -> Dict[str, Any]:
+        """Train all models with optional grid search"""
+        self.logger.info("Training all models")
+        
+        if not self.models:
+            self.create_models()
+        
+        training_results = {}
+        
+        for name, model_info in self.models.items():
+            self.logger.info(f"Training {name}")
+            
+            try:
+                if use_grid_search and 'params' in model_info:
+                    # Use GridSearchCV for hyperparameter tuning
+                    grid_search = GridSearchCV(
+                        model_info['model'], 
+                        model_info['params'], 
+                        cv=5, 
+                        scoring='accuracy',
+                        n_jobs=-1,
+                        verbose=0
+                    )
+                    grid_search.fit(X_train, y_train)
+                    
+                    best_model = grid_search.best_estimator_
+                    best_params = grid_search.best_params_
+                    best_score = grid_search.best_score_
+                    
+                else:
+                    # Simple training
+                    best_model = model_info['model']
+                    best_model.fit(X_train, y_train)
+                    best_params = {}
+                    best_score = cross_val_score(best_model, X_train, y_train, cv=5, scoring='accuracy').mean()
+                
+                # ✅ CRITICAL FIX: Update the model in self.models with the trained one
+                self.models[name]['model'] = best_model
+                self.models[name]['best_params'] = best_params
+                self.models[name]['cv_score'] = best_score
+                
+                # Store results
+                training_results[name] = {
+                    'model': best_model,
+                    'best_params': best_params,
+                    'cv_mean': best_score,
+                    'best_estimator': best_model
+                }
+                
+                # Update best model
+                if best_score > self.best_score:
+                    self.best_score = best_score
+                    self._best_model = best_model
+                    self.best_model_name = name
+                    self.best_params = best_params
+                    
+                self.logger.info(f"{name} - Best CV Accuracy: {best_score:.4f}")
+                
+            except Exception as e:
+                self.logger.error(f"Error training {name}: {str(e)}")
+                continue
+        
+        if self._best_model is None:
+            self.logger.error("No models were successfully trained")
+        else:
+            self.logger.info(f"Best model: {self.best_model_name} with score: {self.best_score:.4f}")
+        
+        return training_results
+    
+    def evaluate_model(self, model, X_test: pd.DataFrame, y_test: pd.Series) -> Dict[str, Any]:
+        """Evaluate a single model"""
+        try:
+            y_pred = model.predict(X_test)
+            y_pred_proba = model.predict_proba(X_test) if hasattr(model, 'predict_proba') else None
+            
+            metrics = {
+                'accuracy': accuracy_score(y_test, y_pred),
+                'precision': precision_score(y_test, y_pred, average='weighted', zero_division=0),
+                'recall': recall_score(y_test, y_pred, average='weighted', zero_division=0),
+                'f1_score': f1_score(y_test, y_pred, average='weighted', zero_division=0),
+                'confusion_matrix': confusion_matrix(y_test, y_pred).tolist()
+            }
+            
+            if y_pred_proba is not None:
+                # Calculate ROC AUC for binary classification
+                if y_pred_proba.shape[1] == 2:  # binary classification
+                    metrics['roc_auc'] = roc_auc_score(y_test, y_pred_proba[:, 1])
+                else:
+                    metrics['roc_auc'] = roc_auc_score(y_test, y_pred_proba, multi_class='ovr')
+            
+            return metrics
+        except Exception as e:
+            self.logger.error(f"Error evaluating model: {str(e)}")
+            return {}
+    
+    def evaluate_all_models(self, X_test: pd.DataFrame, y_test: pd.Series) -> Dict[str, Any]:
+        """Evaluate all trained models"""
+        self.logger.info("Evaluating all models on test set")
+        
+        evaluation_results = {}
+        
+        for name, model_info in self.models.items():
+            if 'model' in model_info and hasattr(model_info['model'], 'predict'):
+                # Check if model is fitted
+                if hasattr(model_info['model'], 'fit'):
+                    try:
+                        # Try to get predictions to check if fitted
+                        _ = model_info['model'].predict(X_test.iloc[:1])  # Small test
+                        is_fitted = True
+                    except (NotFittedError, Exception):
+                        is_fitted = False
+                    
+                    if not is_fitted:
+                        self.logger.warning(f"Model {name} is not fitted, skipping evaluation")
+                        continue
+                
+                self.logger.info(f"Evaluating model: {name}")
+                metrics = self.evaluate_model(model_info['model'], X_test, y_test)
+                if metrics:  # Only add if evaluation succeeded
+                    evaluation_results[name] = metrics
+                    self.logger.info(f"{name} - Test Accuracy: {metrics.get('accuracy', 0):.4f}")
+        
+        return evaluation_results
+    
+    def get_feature_importance(self, model, feature_names: List[str]) -> pd.DataFrame:
+        """Get feature importance from model if available"""
+        try:
+            if hasattr(model, 'feature_importances_'):
+                importances = model.feature_importances_
+                importance_df = pd.DataFrame({
+                    'feature': feature_names,
+                    'importance': importances
+                }).sort_values('importance', ascending=False)
+                return importance_df
+            else:
+                self.logger.info("Model does not support feature importance")
+                return pd.DataFrame()
+        except Exception as e:
+            self.logger.error(f"Error getting feature importance: {str(e)}")
+            return pd.DataFrame()
+    
+    def get_model_comparison(self, evaluation_results: Dict[str, Any]) -> pd.DataFrame:
+        """Create comparison table of all models"""
+        comparison_data = []
+        
+        for model_name, metrics in evaluation_results.items():
+            # Get CV score from stored models if available
+            cv_score = self.models.get(model_name, {}).get('cv_score', self.best_score if model_name == self.best_model_name else 0)
+            
+            comparison_data.append({
+                'Model': model_name.replace('_', ' ').title(),
+                'CV Score': f"{cv_score:.4f}",
+                'Test Accuracy': f"{metrics.get('accuracy', 0):.4f}",
+                'Test Precision': f"{metrics.get('precision', 0):.4f}",
+                'Test Recall': f"{metrics.get('recall', 0):.4f}",
+                'Test F1-Score': f"{metrics.get('f1_score', 0):.4f}",
+                'ROC AUC': f"{metrics.get('roc_auc', 0):.4f}" if 'roc_auc' in metrics else 'N/A',
+                'Best Parameters': str(self.models.get(model_name, {}).get('best_params', 'N/A'))
+            })
+        
+        return pd.DataFrame(comparison_data)
+    
+    def save_model(self, model, filepath: str):
+        """Save model to file"""
+        try:
+            joblib.dump(model, filepath)
+            self.logger.info(f"Model saved to {filepath}")
+        except Exception as e:
+            self.logger.error(f"Error saving model: {str(e)}")
+            raise
+    
     @property
     def best_model(self):
         """Getter for best model with validation"""
@@ -98,253 +281,5 @@ class ModelFactory(BaseModel):
     
     @best_model.setter
     def best_model(self, value):
-        """Setter for best model with validation"""
-        if value is None:
-            raise ValueError("Best model cannot be None")
+        """Setter for best model"""
         self._best_model = value
-    
-    @property
-    def best_score(self) -> float:
-        """Getter for best score"""
-        return self._best_score
-    
-    @property
-    def best_model_name(self) -> Optional[str]:
-        """Getter for best model name"""
-        return self._best_model_name
-    
-    @property
-    def models(self) -> Dict[str, Any]:
-        """Getter for models dictionary"""
-        return self._models.copy()
-    
-    def _initialize_strategies(self) -> Dict[str, ModelStrategy]:
-        """Initialize all model strategies - POLYMORPHISM in action"""
-        return {
-            'random_forest': RandomForestStrategy(),
-            'logistic_regression': LogisticRegressionStrategy(),
-            'svm': SVMStrategy(),
-            'gradient_boosting': GradientBoostingStrategy(),
-            'decision_tree': DecisionTreeStrategy()
-        }
-    
-    def _setup_logger(self) -> logging.Logger:
-        logger = logging.getLogger(__name__)
-        if not logger.handlers:
-            handler = logging.StreamHandler()
-            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-            handler.setFormatter(formatter)
-            logger.addHandler(handler)
-            logger.setLevel(logging.INFO)
-        return logger
-    
-    def create_models(self) -> Dict[str, Any]:
-        """Create models using Strategy Pattern - POLYMORPHISM"""
-        self.logger.info("Creating machine learning models using Strategy Pattern")
-        
-        self._models = {}
-        for name, strategy in self._strategies.items():
-            self._models[name] = {
-                'model': strategy.create_model(),  # Polymorphic call
-                'params': strategy.get_hyperparameters()  # Polymorphic call
-            }
-        
-        self.logger.info(f"Created {len(self._models)} different models using strategies")
-        return self._models
-    
-    def train(self, X_train, y_train, cv: int = 5) -> Dict[str, Any]:
-        """Implementation of abstract method from BaseModel"""
-        self.logger.info("Starting model training with cross-validation")
-        
-        if not self._models:
-            self.create_models()
-        
-        self.training_results = {}
-        
-        for name, model_info in self._models.items():
-            self.logger.info(f"Training {name}")
-            
-            try:
-                grid_search = GridSearchCV(
-                    model_info['model'],
-                    model_info['params'],
-                    cv=cv,
-                    scoring='accuracy',
-                    n_jobs=-1,
-                    verbose=0
-                )
-                
-                grid_search.fit(X_train, y_train)
-                
-                self.training_results[name] = {
-                    'model': grid_search.best_estimator_,
-                    'best_params': grid_search.best_params_,
-                    'best_score': grid_search.best_score_
-                }
-                
-                # Update best model using property setter
-                if grid_search.best_score_ > self._best_score:
-                    self._best_score = grid_search.best_score_
-                    self.best_model = grid_search.best_estimator_  # Using setter
-                    self._best_model_name = name
-                    
-            except Exception as e:
-                self.logger.error(f"Error training {name}: {str(e)}")
-                continue
-        
-        self.logger.info(f"Best model: {self.best_model_name} with score: {self.best_score:.4f}")
-        return self.training_results
-    
-    def predict(self, X) -> np.ndarray:
-        """Implementation of abstract method from BaseModel"""
-        if self._best_model is None:
-            raise ValueError("No model trained for prediction")
-        return self._best_model.predict(X)
-    
-    def evaluate(self, X_test, y_test) -> Dict[str, float]:
-        """Implementation of abstract method from BaseModel"""
-        if self._best_model is None:
-            raise ValueError("No model trained for evaluation")
-        
-        return self.evaluate_model(self._best_model, X_test, y_test)
-    
-    def evaluate_model(self, model, X_test, y_test) -> Dict[str, float]:
-        """Enhanced evaluation with property-based results"""
-        self.logger.info("Evaluating model performance")
-        
-        y_pred = model.predict(X_test)
-        y_pred_proba = model.predict_proba(X_test)[:, 1] if hasattr(model, 'predict_proba') else None
-        
-        metrics = {
-            'accuracy': accuracy_score(y_test, y_pred),
-            'precision': precision_score(y_test, y_pred, average='weighted', zero_division=0),
-            'recall': recall_score(y_test, y_pred, average='weighted', zero_division=0),
-            'f1_score': f1_score(y_test, y_pred, average='weighted', zero_division=0)
-        }
-        
-        if y_pred_proba is not None:
-            try:
-                metrics['roc_auc'] = roc_auc_score(y_test, y_pred_proba)
-            except Exception:
-                metrics['roc_auc'] = 0.0
-        
-        cm = confusion_matrix(y_test, y_pred)
-        metrics['confusion_matrix'] = cm
-        
-        return metrics
-
-    def evaluate_all_models(self, X_test, y_test) -> Dict[str, Dict[str, float]]:
-        """
-        Evaluate all trained models on test set
-        
-        Args:
-            X_test: Test features
-            y_test: Test targets
-            
-        Returns:
-            dict: Evaluation results for all models
-        """
-        self.logger.info("Evaluating all models on test set")
-        
-        evaluation_results = {}
-        
-        for name, result in self.training_results.items():
-            model = result['model']
-            metrics = self.evaluate_model(model, X_test, y_test)
-            evaluation_results[name] = {
-                'training_score': result['best_score'],
-                'test_metrics': metrics,
-                'model': model,
-                'best_params': result['best_params']
-            }
-            
-            self.logger.info(f"{name} - Test Accuracy: {metrics['accuracy']:.4f}")
-        
-        return evaluation_results
-    
-    def get_model_comparison(self, evaluation_results: Dict) -> pd.DataFrame:
-        """
-        Create comparison DataFrame of all models
-        
-        Args:
-            evaluation_results: Results from evaluate_all_models
-            
-        Returns:
-            pd.DataFrame: Model comparison table
-        """
-        comparison_data = []
-        
-        for name, result in evaluation_results.items():
-            row = {
-                'Model': name,
-                'CV Score': result['training_score'],
-                'Test Accuracy': result['test_metrics']['accuracy'],
-                'Test Precision': result['test_metrics']['precision'],
-                'Test Recall': result['test_metrics']['recall'],
-                'Test F1-Score': result['test_metrics']['f1_score'],
-                'Best Parameters': str(result['best_params'])
-            }
-            
-            if 'roc_auc' in result['test_metrics']:
-                row['ROC AUC'] = result['test_metrics']['roc_auc']
-            
-            comparison_data.append(row)
-        
-        df = pd.DataFrame(comparison_data)
-        return df.sort_values('Test Accuracy', ascending=False)
-    
-    def save_model(self, model, filepath: str):
-        """
-        Save trained model to file
-        
-        Args:
-            model: Model to save
-            filepath: Path to save the model
-        """
-        try:
-            joblib.dump(model, filepath)
-            self.logger.info(f"Model saved to {filepath}")
-        except Exception as e:
-            self.logger.error(f"Error saving model: {str(e)}")
-            raise
-    
-    def load_model(self, filepath: str):
-        """
-        Load trained model from file
-        
-        Args:
-            filepath: Path to the saved model
-            
-        Returns:
-            Loaded model or None if error
-        """
-        try:
-            model = joblib.load(filepath)
-            self.logger.info(f"Model loaded from {filepath}")
-            return model
-        except Exception as e:
-            self.logger.error(f"Error loading model: {str(e)}")
-            return None
-    
-    def get_feature_importance(self, model, feature_names: List[str]) -> pd.DataFrame:
-        """
-        Get feature importance from model if available
-        
-        Args:
-            model: Trained model
-            feature_names: List of feature names
-            
-        Returns:
-            pd.DataFrame: Feature importance scores
-        """
-        if hasattr(model, 'feature_importances_'):
-            importances = model.feature_importances_
-            importance_df = pd.DataFrame({
-                'feature': feature_names,
-                'importance': importances
-            }).sort_values('importance', ascending=False)
-            
-            return importance_df
-        else:
-            self.logger.info("Model does not support feature importance")
-            return pd.DataFrame()
