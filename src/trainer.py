@@ -327,7 +327,7 @@ class MedicalModelTrainer(ModelTrainer):
         # Implement medical data validation logic
         self.logger.info("Performing medical data quality checks...")
         # Check for data completeness, value ranges, etc. 
-        # (how can i add comments in my code) - Your original comment here!
+        
         # Actual implementation would include checks like:
         # - Valid value ranges for medical measurements
         # - Required fields for medical compliance
