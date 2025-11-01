@@ -11,10 +11,10 @@ def download_heart_disease_data():
         print("Downloading dataset...")
         df = pd.read_csv(url, names=column_names, na_values='?')
         df.to_csv('data/cleveland.data', index=False)
-        print(f"✅ Dataset downloaded! Shape: {df.shape}")
+        print(f" Dataset downloaded! Shape: {df.shape}")
         return df
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         return None
 
 if __name__ == "_main_":
