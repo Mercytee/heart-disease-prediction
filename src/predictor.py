@@ -24,7 +24,7 @@ class BasePredictor(ABC):
 
 class Predictor(BasePredictor):
     """
-    Enhanced Prediction class with advanced OOP features
+    Enhanced Prediction class with OOP features
     Uses trained models to make predictions with proper preprocessing
     """
     
